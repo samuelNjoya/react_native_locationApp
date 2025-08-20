@@ -5,17 +5,17 @@ import { Ionicons } from '@expo/vector-icons';
 export default function HomeScreen() {
   return (
     <ScrollView style={styles.homeContainer} contentContainerStyle={{padding: 20}}>
-      <Text style={styles.homeTitle}>Bienvenue sur ImmoCam</Text>
+      <Text style={styles.homeTitle}>Bienvenue sur SMARTECHOME</Text>
       <Text style={styles.homeText}>
         Trouvez ou publiez les meilleures annonces immobilières locales au Cameroun. 
-        Que vous cherchiez une maison, un appartement ou un terrain, ImmoCam est votre partenaire idéal.
+        Que vous cherchiez une maison, un appartement ou un terrain, SMARTECHOME est votre partenaire idéal.
       </Text>
       <Image
-        source={{uri:'https://images.unsplash.com/photo-1600585154356-59681473bdf9?auto=format&fit=crop&w=800&q=80'}}
+        source={{uri:'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80'}}
         style={styles.homeImage}
       />
       <Text style={styles.homeHighlight}>
-        Explorez nos fonctionnalités :
+        Explorez nos fonctionnalités SMARTECH:
       </Text>
       <Text style={styles.homeBullet}>• Recherche pratique avec cartes et filtres avancés.</Text>
       <Text style={styles.homeBullet}>• Publication facile d’annonces avec photos.</Text>

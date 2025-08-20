@@ -1,8 +1,6 @@
 import React, { useState, useRef } from 'react';
 import {
-  View,
-  FlatList,
-  Text,
+  View,FlatList, Text,
   TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
@@ -28,8 +26,9 @@ export default function ChatScreen() {
   };
 
   return (
-    <KeyboardAvoidingView style={styles.chatContainer} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+    <KeyboardAvoidingView  style={styles.chatContainer} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <FlatList
+      showsVerticalScrollIndicator={false}
         ref={flatListRef}
         data={messages}
         keyExtractor={item => item.id}

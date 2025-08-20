@@ -1,8 +1,12 @@
 import React from 'react';
 import { View, Text, FlatList, TouchableOpacity, Alert, StyleSheet } from 'react-native';
+import { useProperties } from '../contexts/PropertyContext';
 
-export default function ProfileScreen({ properties, onDelete }) {
-  const mine = properties.filter(p => p.owner === 'Vous');
+export default function ProfileScreen() {
+
+  const {properties, deleteProperty} = useProperties(); // Utiliser le contexte pour obtenir et supprimer les propriétés
+// Filtrer annonces de l’utilisateur actuel (ici "Vous")
+  const mine = properties.filter((p) => p.owner === 'Vous');
 
   return (
     <View style={styles.profileContainer}>
@@ -16,6 +20,7 @@ export default function ProfileScreen({ properties, onDelete }) {
           renderItem={({ item }) => (
             <View style={styles.myProperty}>
               <Text style={styles.myPropertyTitle}>{item.title}</Text>
+              <Text style={styles.myPropertyTitle}>{item.price}</Text>
               <TouchableOpacity 
                 style={styles.deleteBtn} 
                 onPress={() => {

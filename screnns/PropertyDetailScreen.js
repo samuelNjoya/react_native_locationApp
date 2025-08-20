@@ -1,6 +1,8 @@
 import React from 'react';
 import { ScrollView, Text, Image, StyleSheet, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { View } from 'react-native';
+import { COLORS } from '../assets/Theme';
 
 const { width } = Dimensions.get('window');
 
@@ -8,7 +10,7 @@ export default function PropertyDetailScreen({ route }) {
   const { property } = route.params;
 
   return (
-    <ScrollView style={styles.detailContainer} contentContainerStyle={{paddingBottom: 40}}>
+    <ScrollView style={styles.detailContainer} contentContainerStyle={{paddingBottom: 40}} showsVerticalScrollIndicator={false}>
       <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={true}>
         {property.images.map((img, idx) => (
           <Image key={idx} source={{ uri: img }} style={styles.detailImage} />
@@ -29,7 +31,7 @@ export default function PropertyDetailScreen({ route }) {
 const styles = StyleSheet.create({
   detailContainer: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: COLORS.white,
   },
   detailImage: {
     width,
@@ -46,7 +48,7 @@ const styles = StyleSheet.create({
   },
   detailPrice: {
     fontSize: 20,
-    color: '#2a9d8f',
+    color: COLORS.greenColors,
     fontWeight: '700',
     marginBottom: 8,
   },

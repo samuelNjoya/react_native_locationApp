@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { ScrollView, TextInput, TouchableOpacity, Text, Alert, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import { useProperties } from '../contexts/PropertyContext';
 
-export default function PublishScreen({ onPublish }) {
+export default function PublishScreen() {
+
+  const {addProperty} = useProperties(); // Utiliser le contexte pour ajouter une propriété
+
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState('');
   const [description, setDescription] = useState('');
@@ -33,7 +37,7 @@ export default function PublishScreen({ onPublish }) {
       owner: 'Vous',
     };
 
-    onPublish(newProperty);
+    addProperty(newProperty); // Ajouter la nouvelle propriété via le contexte
     Alert.alert('Succès', 'Annonce publiée avec succès!');
     setTitle('');
     setPrice('');
@@ -46,7 +50,7 @@ export default function PublishScreen({ onPublish }) {
 
   return (
     <KeyboardAvoidingView style={styles.publishContainer} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <ScrollView contentContainerStyle={{ paddingBottom: 40, paddingHorizontal: 20, paddingTop: 15 }}>
+      <ScrollView contentContainerStyle={{ paddingBottom: 40, paddingHorizontal: 20, paddingTop: 15 }} showsVerticalScrollIndicator={false}>
         <TextInput style={styles.input} placeholder="Titre" value={title} onChangeText={setTitle} />
         <TextInput style={styles.input} placeholder="Prix (FCFA)" keyboardType="numeric" value={price} onChangeText={setPrice} />
         <TextInput style={[styles.input, { height: 80 }]} placeholder="Description" multiline value={description} onChangeText={setDescription} />
