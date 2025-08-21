@@ -1,15 +1,51 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { Video } from 'expo-av';
 
 export default function PropertyCard({ property, onPress }) {
   return (
+    // <TouchableOpacity style={styles.propertyCard} onPress={onPress} activeOpacity={0.8}>
+    //   {/* <Image source={{ uri: property.images[0] }} style={styles.propertyImage} />  key={index} a ajouter*/}
+    //   <Image  source={{  uri: property.images[0] }} style={styles.propertyImage} />
+    //   <View style={styles.propertyInfo}>
+    //     <Text style={styles.propertyTitle} numberOfLines={1}>{property.title}</Text>
+    //     <Text style={styles.propertyPrice}>{property.price.toLocaleString()} FCFA</Text>
+    //     <Text style={styles.propertyLocation}><Ionicons name="location-outline" size={14} /> {property.location}</Text>
+    //   </View>
+    // </TouchableOpacity>
+
     <TouchableOpacity style={styles.propertyCard} onPress={onPress} activeOpacity={0.8}>
-      <Image source={{ uri: property.images[0] }} style={styles.propertyImage} />
+      {(() => {
+        const uri = property.images[0];
+        const isVideo = uri.match(/\.(mp4|mov|avi|mkv|webm)$/i);
+
+        if (isVideo) {
+          return (
+            <Video
+              source={{ uri }}
+              style={styles.propertyImage}
+              useNativeControls
+              resizeMode="cover"
+              isLooping
+            />
+          );
+        } else {
+          return (
+            <Image
+              source={{ uri }}
+              style={styles.propertyImage}
+            />
+          );
+        }
+      })()}
+
       <View style={styles.propertyInfo}>
         <Text style={styles.propertyTitle} numberOfLines={1}>{property.title}</Text>
         <Text style={styles.propertyPrice}>{property.price.toLocaleString()} FCFA</Text>
-        <Text style={styles.propertyLocation}><Ionicons name="location-outline" size={14} /> {property.location}</Text>
+        <Text style={styles.propertyLocation}>
+          <Ionicons name="location-outline" size={14} /> {property.location}
+        </Text>
       </View>
     </TouchableOpacity>
   );
