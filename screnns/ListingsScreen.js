@@ -7,6 +7,7 @@ import { useProperties } from '../contexts/PropertyContext';
 export default function ListingsScreen({ navigation }) {
   
   const { properties } = useProperties(); // Utiliser le contexte pour obtenir les propriétés
+  //console.log('Liste des Properties:', properties);
   const [searchText, setSearchText] = useState('');
 
     // Assurer que properties est un tableau

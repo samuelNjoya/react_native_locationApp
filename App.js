@@ -12,6 +12,8 @@ import ChatScreen from './screnns/ChatScreen';
 import { COLORS } from './assets/Theme';
 import ListingsStack from './components/Data/ListingsStack';
 import { PropertyProvider } from './contexts/PropertyContext';
+import ProfileStack from './components/Data/ProfileStack';
+
 
 const Tab = createBottomTabNavigator();
 
@@ -44,10 +46,10 @@ export default function App() {
             tabBarLabelStyle: { fontSize: 12, fontWeight: '600' },
           })}
         >
-          <Tab.Screen name="Accueil" component={HomeScreen} />
+          <Tab.Screen name="Accueil" component={HomeScreen} options={{ title:"Accueil"}} />
           <Tab.Screen name="Annonces" component={ListingsStack} />
           <Tab.Screen name="Publier" component={PublishScreen} />
-          <Tab.Screen name="Profil" component={ProfileScreen} />
+          <Tab.Screen name="Profil" component={ProfileStack} /> 
           <Tab.Screen name="Chat" component={ChatScreen} />
         </Tab.Navigator>
       </NavigationContainer>

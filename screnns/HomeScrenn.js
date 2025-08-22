@@ -5,17 +5,17 @@ import { Ionicons } from '@expo/vector-icons';
 export default function HomeScreen() {
   return (
     <ScrollView style={styles.homeContainer} contentContainerStyle={{padding: 20}}>
-      <Text style={styles.homeTitle}>Bienvenue sur SMARTECHOME</Text>
+      <Text style={styles.homeTitle}>Bienvenue sur SMARTHOME</Text>
       <Text style={styles.homeText}>
         Trouvez ou publiez les meilleures annonces immobilières locales au Cameroun. 
-        Que vous cherchiez une maison, un appartement ou un terrain, SMARTECHOME est votre partenaire idéal.
+        Que vous cherchiez une maison, un appartement ou un terrain, SMARTHOME est votre partenaire idéal.
       </Text>
       <Image
         source={{uri:'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80'}}
         style={styles.homeImage}
       />
       <Text style={styles.homeHighlight}>
-        Explorez nos fonctionnalités SMARTECH:
+        Explorez nos fonctionnalités SMARTHOME:
       </Text>
       <Text style={styles.homeBullet}>• Recherche pratique avec cartes et filtres avancés.</Text>
       <Text style={styles.homeBullet}>• Publication facile d’annonces avec photos.</Text>

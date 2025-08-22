@@ -4,8 +4,9 @@ import { useProperties } from '../contexts/PropertyContext';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { COLORS } from '../assets/Theme';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import ClearStorageButton from '../components/Data/ClearStorage';
 
-export default function ProfileScreen() {
+export default function ProfileScreen({ navigation }) {
 
   const { properties, deleteProperty } = useProperties(); // Utiliser le contexte pour obtenir et supprimer les propriétés
   // Filtrer annonces de l’utilisateur actuel (ici "Vous")
@@ -35,16 +36,21 @@ export default function ProfileScreen() {
                 }}>
                 <Text style={{ color: 'white' }}><FontAwesome name="trash-o" size={24} color="#e63946" /></Text>
               </TouchableOpacity>
-              <TouchableOpacity 
-              onPress={() => navigation.navigate('EditProperty', { property: item })}
-              style={styles.deleteBtn}
+              <TouchableOpacity
+                onPress={() => navigation.navigate('EditProperty', { property: item })}
+                style={styles.deleteBtn}
               >
                 <Text style={{ color: 'blue' }}><AntDesign name="edit" size={24} color="blue" /></Text>
               </TouchableOpacity>
             </View>
           )}
         />
+
       )}
+      {/* Boutton pour vider la cache */}
+      <View>
+        <ClearStorageButton />
+      </View>
     </View>
   );
 }
@@ -89,7 +95,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingVertical: 7,
     paddingHorizontal: 7,
-    marginLeft:8,
+    marginLeft: 8,
     elevation: 2,
   },
 });
