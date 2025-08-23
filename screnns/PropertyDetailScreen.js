@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { View } from 'react-native';
 import { COLORS } from '../assets/Theme';
 import { Video } from 'expo-av';
+import FavoriteIcon from '../components/FavoriteIcon.js';
 
 const { width } = Dimensions.get('window');
 
@@ -67,7 +68,12 @@ export default function PropertyDetailScreen({ route }) { //1:image 2:video 3:im
       </ScrollView>
 
       <View style={styles.detailInfo}>
-        <Text style={styles.detailTitle}>{property.title}</Text>
+        {/* Titre + favori */}
+        <View style={styles.detailHeader}>
+          <Text style={styles.detailTitle}>{property.title}</Text>
+          <FavoriteIcon propertyId={property.id} style={{ marginLeft: 8 }} />
+        </View>
+        {/* <Text style={styles.detailTitle}>{property.title}</Text> */}
         <Text style={styles.detailPrice}>{property.price.toLocaleString()} FCFA</Text>
         <Text style={styles.detailLocation}><Ionicons name="location-outline" size={18} /> {property.location}</Text>
         <Text style={styles.detailDesc}>{property.description}</Text>
@@ -95,6 +101,13 @@ const styles = StyleSheet.create({
   },
   detailInfo: {
     padding: 20,
+  },
+  detailHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+    paddingRight: 20
   },
   detailTitle: {
     fontSize: 24,

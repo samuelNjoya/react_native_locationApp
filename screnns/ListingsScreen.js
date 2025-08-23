@@ -50,6 +50,7 @@ export default function ListingsScreen({ navigation }) {
           <PropertyCard
             property={item}
             onPress={() => navigation.navigate('Detail', { property: item })}
+            
           />
         )}
       />

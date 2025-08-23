@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
+
 export default function ChatScreen() {
   const [messages, setMessages] = useState([
     { id: '1', sender: 'Alice', text: 'Bonjour, est-ce que votre appartement est toujours disponible ?' },
@@ -53,6 +54,7 @@ export default function ChatScreen() {
           <Ionicons name="send" size={24} color="white" />
         </TouchableOpacity>
       </View>
+     
     </KeyboardAvoidingView>
   );
 }

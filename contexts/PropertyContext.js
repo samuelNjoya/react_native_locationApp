@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Clef unique pour AsyncStorage
 const STORAGE_KEY = 'properties_storage_key';
+const STORAGE_KEY_FAVORITES = 'favorites_storage_key'; // Clef pour les favoris
 
 const defaultProperties = [
   {
@@ -94,6 +95,7 @@ const PropertyContext = createContext();
 export const PropertyProvider = ({ children }) => {
 
   const [properties, setProperties] = useState([]);
+  const [favorites, setFavorites] = useState([]);
 
 
   // Charger les données au démarrage
@@ -101,6 +103,8 @@ export const PropertyProvider = ({ children }) => {
     async function loadProperties() {
       try {
         const data = await AsyncStorage.getItem(STORAGE_KEY);
+        const favData = await AsyncStorage.getItem(STORAGE_KEY_FAVORITES);
+
         if (data !== null) {
           setProperties(JSON.parse(data));
         } else {
@@ -109,6 +113,10 @@ export const PropertyProvider = ({ children }) => {
           setProperties(defaultProperties);
           await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(defaultProperties)); // On stocke aussi ce tableau par défaut pour la suite
         }
+
+        if (favData !== null) setFavorites(JSON.parse(favData));
+        else setFavorites([]);
+
       } catch (error) {
         console.log("Erreur chargement properties:", error);
         setProperties(defaultProperties); // En cas d'erreur, on initialise avec les propriétés par défaut
@@ -126,6 +134,15 @@ export const PropertyProvider = ({ children }) => {
     }
   };
 
+  //
+  const saveFavorites = async (newFavorites) => {
+    try {
+      await AsyncStorage.setItem(STORAGE_KEY_FAVORITES, JSON.stringify(newFavorites));
+    } catch (error) {
+      console.log("Erreur sauvegarde favorites:", error);
+    }
+  };
+
   // Ajout d'une annonce
   const addProperty = (property) => {
     const newList = [property, ...properties];
@@ -138,6 +155,13 @@ export const PropertyProvider = ({ children }) => {
     const newList = properties.filter(p => p.id !== id);
     setProperties(newList);
     saveProperties(newList);
+
+     // Nettoyer des favoris au besoin
+    if (favorites.includes(id)) {
+      const newFavs = favorites.filter(favId => favId !== id);
+      setFavorites(newFavs);
+      saveFavorites(newFavs);
+    }
   };
 
   // Modification
@@ -147,9 +171,43 @@ export const PropertyProvider = ({ children }) => {
     saveProperties(newList);
   };
 
+  // Ajout/suppression/toggle favoris
+  const addFavorite = (id) => {
+    if (!favorites.includes(id)) {
+      const newFavs = [...favorites, id];
+      setFavorites(newFavs);
+      saveFavorites(newFavs);
+    }
+  };
+
+  const removeFavorite = (id) => {
+    if (favorites.includes(id)) {
+      const newFavs = favorites.filter(favId => favId !== id);
+      setFavorites(newFavs);
+      saveFavorites(newFavs);
+    }
+  };
+
+  const toggleFavorite = (id) => {
+    if (favorites.includes(id)) {
+      removeFavorite(id);
+    } else {
+      addFavorite(id);
+    }
+  };
+
   // Fournir le state et fonctions aux composants enfants
   return (
-    <PropertyContext.Provider value={{ properties, addProperty, deleteProperty, modifyProperty }}>
+   <PropertyContext.Provider value={{
+      properties,
+      addProperty,
+      deleteProperty,
+      modifyProperty,
+      favorites,
+      addFavorite,
+      removeFavorite,
+      toggleFavorite
+    }}>
       {children}
     </PropertyContext.Provider>
   );
