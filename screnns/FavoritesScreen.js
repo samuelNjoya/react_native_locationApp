@@ -19,6 +19,7 @@ export default function FavoritesScreen({ navigation }) {
        
         <FlatList
           data={favoriteProperties}
+          showsVerticalScrollIndicator={false}
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
             <PropertyCard

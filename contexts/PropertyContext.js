@@ -166,23 +166,23 @@ export const PropertyProvider = ({ children }) => {
 
   // Modification
   const modifyProperty = (updatedProperty) => {
-    const newList = properties.map(p => p.id === updatedProperty.id ? { ...p, ...updatedProperty } : p);
+    const newList = properties.map(p => p.id === updatedProperty.id ? { ...p, ...updatedProperty } : p); 
     setProperties(newList);
     saveProperties(newList);
   };
 
   // Ajout/suppression/toggle favoris
-  const addFavorite = (id) => {
-    if (!favorites.includes(id)) {
-      const newFavs = [...favorites, id];
-      setFavorites(newFavs);
-      saveFavorites(newFavs);
-    }
-  };
+ const addFavorite = (id) => {
+  if (!favorites.includes(id)) { // Vérifie si l'ID n'est pas déjà dans les favoris
+    const newFavs = [...favorites, id]; // Crée un nouveau tableau avec l'ID ajouté
+    setFavorites(newFavs); // Met à jour l'état React
+    saveFavorites(newFavs); // Sauvegarde (dans localStorage/API/etc.)
+  }
+};
 
   const removeFavorite = (id) => {
     if (favorites.includes(id)) {
-      const newFavs = favorites.filter(favId => favId !== id);
+      const newFavs = favorites.filter(favId => favId !== id); // Filtre l'ID à supprimer
       setFavorites(newFavs);
       saveFavorites(newFavs);
     }
@@ -190,9 +190,9 @@ export const PropertyProvider = ({ children }) => {
 
   const toggleFavorite = (id) => {
     if (favorites.includes(id)) {
-      removeFavorite(id);
+      removeFavorite(id); // Si déjà favori, on le retire
     } else {
-      addFavorite(id);
+      addFavorite(id); // Sinon on l'ajoute
     }
   };
 
@@ -215,3 +215,4 @@ export const PropertyProvider = ({ children }) => {
 
 // Hook personnalisé pour simplifier la consommation de ce contexte dans les composants
 export const useProperties = () => useContext(PropertyContext);
+
