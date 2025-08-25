@@ -1,21 +1,12 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  Alert,
-  ScrollView,
-  Image,
-  Button,
-  Platform,
-  KeyboardAvoidingView
-} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ScrollView, Image, Button, Platform, KeyboardAvoidingView } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import * as ImagePicker from 'expo-image-picker';
 import { useProperties } from '../contexts/PropertyContext';
+import { useToast } from 'react-native-toast-notifications';
+import Spinner from '../components/Spinner';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 
 // Validation avec Yup et ajout de la validation images
 const validationSchema = Yup.object().shape({
@@ -31,9 +22,11 @@ const validationSchema = Yup.object().shape({
 export default function EditPropertyScreen({ route, navigation }) {
   const { modifyProperty } = useProperties();
   const { property } = route.params;
-
+  const Toast = useToast();
   // Gestion locale des images, on initialise avec les images existantes
   const [imageUris, setImageUris] = useState(property.images || []);
+  const [isLoading, setIsLoading] = useState(false);
+
 
   // Fonction pour choisir des images
   const pickImages = async () => {
@@ -49,8 +42,8 @@ export default function EditPropertyScreen({ route, navigation }) {
         mediaTypes: ['images', 'videos'],
       });
       if (!result.canceled) {
-       // const uris = result.selected ? result.selected.map(img => img.uri) : [result.uri];
-       const uris = result.assets ? result.assets.map(asset => asset.uri) : [];
+        // const uris = result.selected ? result.selected.map(img => img.uri) : [result.uri];
+        const uris = result.assets ? result.assets.map(asset => asset.uri) : [];
         setImageUris((prev) => [...prev, ...uris]);
       }
     } catch (error) {
@@ -64,14 +57,30 @@ export default function EditPropertyScreen({ route, navigation }) {
   };
 
   const handleSubmit = (values) => {
-    if(imageUris.length === 0){
+    if (imageUris.length === 0) {
       Alert.alert('Erreur', 'Veuillez sélectionner au moins une image.');
       return;
     }
     // Intégrer les images modifiées dans la propriété
-    modifyProperty({ ...property, ...values, price: parseInt(values.price), bedrooms: parseInt(values.bedrooms), bathrooms: parseInt(values.bathrooms), images: imageUris });
-    Alert.alert('Annonce modifiée avec succès');
-    navigation.goBack();
+    // modifyProperty({ ...property, ...values, price: parseInt(values.price), bedrooms: parseInt(values.bedrooms), bathrooms: parseInt(values.bathrooms), images: imageUris });
+    // Alert.alert('Annonce modifiée avec succès');
+    // navigation.goBack();
+
+    setIsLoading(true);
+    setTimeout(() => {
+      modifyProperty({ ...property, ...values, price: parseInt(values.price), bedrooms: parseInt(values.bedrooms), bathrooms: parseInt(values.bathrooms), images: imageUris });
+      setIsLoading(false);
+      Toast.show("Annonce modifiée avec succès !", {
+        type: 'success',
+        placement: "top",
+        duration: 2000,
+        offset: 90,
+        animationType: "zoom-in", // "slide-in" | "zoom-in" | "fade-in"
+         dangerIcon: <AntDesign name="closecircle" size={24} color="white" />,
+          successIcon:<Ionicons name="checkmark-circle-sharp" size={24} color="white" />
+      });
+      navigation.goBack();
+    }, 1500);
   };
 
   return (
@@ -174,6 +183,7 @@ export default function EditPropertyScreen({ route, navigation }) {
             </View>
           )}
         </Formik>
+        <Spinner visible={isLoading} />
       </ScrollView>
     </KeyboardAvoidingView>
   );

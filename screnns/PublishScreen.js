@@ -5,6 +5,10 @@ import { useProperties } from '../contexts/PropertyContext';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Video } from 'expo-av';
+import Spinner from '../components/Spinner';
+import { useToast } from 'react-native-toast-notifications';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
+
 
 // Schéma de validation avec Yup pour les champs du formulaire
 const validationSchema = Yup.object().shape({
@@ -19,8 +23,9 @@ const validationSchema = Yup.object().shape({
 
 export default function PublishScreen() {
   const { addProperty } = useProperties();
-
+  const Toast = useToast();
   const [imageUris, setImageUris] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Demande les permissions et ouvre la galerie pour sélectionner plusieurs images
   const pickImages = async () => {
@@ -83,10 +88,30 @@ export default function PublishScreen() {
           owner: 'Vous',
         };
 
-        addProperty(newProperty);
-        Alert.alert('Succès', 'Annonce publiée avec succès!');
-        resetForm();
-        setImageUris([]);
+        // addProperty(newProperty);
+        // Alert.alert('Succès', 'Annonce publiée avec succès!');
+        // resetForm();
+        // setImageUris([]);
+
+
+        setIsLoading(true);
+        setTimeout(() => {
+          addProperty(newProperty);
+          setIsLoading(false);
+          Toast.show("Annonce publiée !", {
+            type: 'success',
+            placement: "top",
+            duration: 2000,
+            offset: 90,
+            animationType: "zoom-in", // "slide-in" | "zoom-in" | "fade-in"
+            dangerIcon: <AntDesign name="closecircle" size={24} color="white" />,
+            successIcon: <Ionicons name="checkmark-circle-sharp" size={24} color="white" />
+          });
+          resetForm();
+          setImageUris([]);
+        }, 1500);
+
+
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
@@ -175,7 +200,7 @@ export default function PublishScreen() {
               <ScrollView horizontal showsHorizontalScrollIndicator={true} style={styles.imagePreviewContainer}>
                 {imageUris.map((uri) => {
                   const isVideo = uri.match(/\.(mp4|mov|avi|mkv|webm)$/i); // Vérifie l'extension video
-                   console.log('URI de l\'image ou vidéo:', uri, 'Est-ce une vidéo ?', isVideo);
+                  console.log('URI de l\'image ou vidéo:', uri, 'Est-ce une vidéo ?', isVideo);
                   return (
                     <View key={uri} style={styles.imageWrapper}>
                       {isVideo ? (
@@ -212,6 +237,7 @@ export default function PublishScreen() {
             }}>
               <Text style={styles.submitButtonText}>Publier</Text>
             </TouchableOpacity>
+            <Spinner visible={isLoading} />
           </ScrollView>
         </KeyboardAvoidingView>
       )}

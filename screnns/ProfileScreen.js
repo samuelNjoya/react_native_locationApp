@@ -1,16 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Alert, StyleSheet } from 'react-native';
 import { useProperties } from '../contexts/PropertyContext';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { COLORS } from '../assets/Theme';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import ClearStorageButton from '../components/Data/ClearStorage';
+import ClearStorageButton from '../components/Data/ClearStorage'; import MyScreen from '../components/Data/TestSkeleton';
+import Spinner from '../components/Spinner';
+import { useToast } from 'react-native-toast-notifications';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function ProfileScreen({ navigation }) {
 
   const { properties, deleteProperty } = useProperties(); // Utiliser le contexte pour obtenir et supprimer les propriétés
   // Filtrer annonces de l’utilisateur actuel (ici "Vous")
   const mine = properties.filter((p) => p.owner === 'Vous');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const Toast = useToast();
+
+  const handleDelete = (id) => {
+    setIsLoading(true);
+    setTimeout(() => {
+      deleteProperty(id);
+      setIsLoading(false);
+      Toast.show("Annonce supprimée avec succès", {
+        type: 'danger',
+        placement: "top",
+        duration: 2000,
+        offset: 90,
+        animationType: "zoom-in",
+        dangerIcon: <AntDesign name="closecircle" size={24} color="white" />,
+        successIcon: <Ionicons name="checkmark-circle-sharp" size={24} color="white" />
+      });
+    }, 1500);
+  };
 
   return (
     <View style={styles.profileContainer}>
@@ -31,7 +54,8 @@ export default function ProfileScreen({ navigation }) {
                 onPress={() => {
                   Alert.alert('Supprimer', 'Voulez-vous supprimer cette annonce ?', [
                     { text: 'Annuler', style: 'cancel' },
-                    { text: 'Oui', style: 'destructive', onPress: () => deleteProperty(item.id) },
+                    { text: 'Oui', style: 'destructive', onPress: () => handleDelete(item.id) },
+
                   ]);
                 }}>
                 <Text style={{ color: 'white' }}><FontAwesome name="trash-o" size={24} color="#e63946" /></Text>
@@ -51,6 +75,7 @@ export default function ProfileScreen({ navigation }) {
       <View>
         <ClearStorageButton />
       </View>
+      <Spinner visible={isLoading} />
     </View>
   );
 }

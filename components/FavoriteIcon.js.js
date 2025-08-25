@@ -4,6 +4,8 @@ import { TouchableOpacity, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useProperties } from '../contexts/PropertyContext';
 import { useToast } from 'react-native-toast-notifications';
+import AntDesign from '@expo/vector-icons/AntDesign';
+
 
 export default function FavoriteIcon({ propertyId, style }) {
   const { favorites, toggleFavorite } = useProperties();
@@ -24,6 +26,8 @@ export default function FavoriteIcon({ propertyId, style }) {
       offset: 90,
       animationType: "slide-in", // "slide-in" | "zoom-in" | "fade-in"
       //animationDuration: 400,
+      dangerIcon: <AntDesign name="closecircle" size={24} color="white" />,
+      successIcon:<Ionicons name="checkmark-circle-sharp" size={24} color="white" />
     });
    
   };
